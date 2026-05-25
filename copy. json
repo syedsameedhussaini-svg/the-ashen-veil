@@ -1,0 +1,56 @@
+{
+  "hero_threshold": {
+    "inscription": "NOTICED"
+  },
+
+  "ritual_entry_sequence": {
+    "fragment_1": "Before you arrived.",
+    "fragment_2": "The chains were not enough.",
+    "fragment_3": "It remembered you."
+  },
+
+  "helmet_chamber": {
+    "copy": null,
+    "note": "The object speaks."
+  },
+
+  "first_lore_fragment": {
+    "visible": "The Order was not founded to guard the living —",
+    "obscured": "— but to ensure the sealed remain unwitnessed by those who would wake them by being seen.",
+    "interaction": "revealed on cursor hover/proximity"
+  },
+
+  "knightly_orders": {
+    "The Ashbound": {
+      "title": "Wardens of the Unbreathing",
+      "inscription": "They do not stand watch. They stand between."
+    },
+    "The Graven Veil": {
+      "title": "Speakers of the Last Seal",
+      "inscription": "The words they speak cannot be unspoken."
+    },
+    "The Pallid Choir": {
+      "title": "Those Who Carry the Silence",
+      "inscription": "Each one swallowed something so it couldn't."
+    },
+    "The Unmade Throne": {
+      "title": "Inheritors of the Before-Age",
+      "inscription": "They remember what must not be remembered again."
+    }
+  },
+
+  "forbidden_archive": {
+    "fragment_1": "…the third seal was not broken. It was answered. By something that recognized the sigil as a name — its name — and responded accordingly. The knight who inscribed it has not been found. Only the hand…",
+    "fragment_2": "…consensus among the Graven is that it does not sleep. That sleep implies a return. What the helmet contains does not return. It simply waits for the distinction to cease mattering…",
+    "fragment_3": "…entry [EXCISED]. The visitor was not touched. The visitor was only looked at. What the looking did to the visitor is recorded elsewhere. Access: [EXCISED]. Access: [EXCISED]. Access…"
+  },
+
+  "hidden_map_reveal": {
+    "inscription": "You have already been here.",
+    "trigger": "appears only after full map emergence"
+  },
+
+  "unsealing_moment": {
+    "final_word": "RECOGNIZED"
+  }
+}
