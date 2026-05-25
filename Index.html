@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Ashen Veil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cormorant+Infant:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #080806;
+    --ash: #1a1814;
+    --bone: #c8bfaa;
+    --silver: #8a8880;
+    --gold: #c9a84c;
+    --crack: #d4e8d0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--void);
+    color: var(--bone);
+    font-family: 'Cormorant Infant', serif;
+    cursor: none;
+    overflow-x: hidden;
+  }
+
+  /* CURSOR */
+  #cursor {
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s;
+  }
+
+  #cursor svg {
+    animation: rotateCursor 8s linear infinite;
+  }
+
+  @keyframes rotateCursor {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* SECTIONS */
+  section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* THRESHOLD */
+  #threshold {
+    background: var(--void);
+    flex-direction: column;
+  }
+
+  #threshold-word {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(6rem, 20vw, 18rem);
+    font-weight: 900;
+    color: var(--bone);
+    letter-spacing: 0.05em;
+    opacity: 0;
+    animation: fadeInWord 3s ease-in-out 1s forwards;
+    text-align: center;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  @keyframes fadeInWord {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  #threshold-sub {
+    font-family: 'Cormorant Infant', serif;
+    font-size: clamp(0.6rem, 1vw, 0.85rem);
+    color: var(--silver);
+    letter-spacing: 0.3em;
+    opacity: 0;
+    animation: fadeInWord 2s ease-in-out 4s forwards;
+    margin-top: 2rem;
+    text-transform: uppercase;
+  }
+
+  /* HELMET CHAMBER */
+  #helmet-chamber {
+    background: var(--void);
+    flex-direction: column;
+    min-height: 120vh;
+  }
+
+  #helmet-container {
+    position: relative;
+    width: 65vw;
+    max-width: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #helmet-img {
+    width: 100%;
+    filter: drop-shadow(0 0 40px rgba(212, 232, 208, 0.15));
+    transition: transform 0.3s ease-out;
+    animation: floatHelmet 6s ease-in-out infinite;
+  }
+
+  @keyframes floatHelmet {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+  }
+
+  #crack-glow {
+    position: absolute;
+    width: 4px;
+    height: 35%;
+    background: linear-gradient(to bottom, transparent, var(--crack), transparent);
+    left: 50%;
+    top: 30%;
+    transform: translateX(-50%);
+    animation: crackPulse 4s ease-in-out infinite;
+    filter: blur(2px);
+  }
+
+  @keyframes crackPulse {
+    0%, 100% { opacity: 0.4; height: 35%; }
+    50% { opacity: 0.9; height: 38%; }
+  }
+
+  /* FRAGMENT */
+  #fragment-section {
+    background: var(--void);
+    padding: 10vh 10vw;
+    align-items: flex-start;
+  }
+
+  .fragment {
+    font-family: 'Cormorant Infant', serif;
+    font-size: clamp(0.8rem, 1.5vw, 1.1rem);
+    font-style: italic;
+    color: var(--bone);
+    opacity: 0.08;
+    filter: blur(1px);
+    max-width: 60ch;
+    line-height: 2;
+    transition: opacity 0.6s ease, filter 0.6s ease;
+    cursor: default;
+    margin: 2rem 0;
+    padding: 1rem;
+  }
+
+  .fragment:hover {
+    opacity: 0.75;
+    filter: blur(0px);
+  }
+
+  /* ORDERS */
+  #orders-section {
+    background: var(--void);
+    flex-direction: column;
+    gap: 4rem;
+    padding: 10vh 5vw;
+    align-items: flex-start;
+  }
+
+  .order {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+
+  .order.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .order-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    font-weight: 700;
+    color: var(--silver);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .order-inscription {
+    font-family: 'Cormorant Infant', serif;
+    font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+    font-style: italic;
+    color: var(--silver);
+    opacity: 0.4;
+    letter-spacing: 0.15em;
+    margin-top: 0.5rem;
+  }
+
+  /* ARCHIVE */
+  #archive-section {
+    background: var(--void);
+    flex-direction: column;
+    gap: 6rem;
+    padding: 15vh 8vw;
+  }
+
+  .archive-page {
+    background: #0e0d0b;
+    border: 1px solid #2a2820;
+    padding: 3rem;
+    max-width: 50ch;
+    position: relative;
+    opacity: 0;
+    transform: rotate(-2deg) translateY(30px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+  }
+
+  .archive-page.visible {
+    opacity: 1;
+    transform: rotate(-1deg) translateY(0);
+  }
+
+  .archive-page:nth-child(2) {
+    align-self: flex-end;
+    transform: rotate(1.5deg) translateY(30px);
+  }
+
+  .archive-page:nth-child(2).visible {
+    transform: rotate(1.5deg) translateY(0);
+  }
+
+  .archive-page:nth-child(3) {
+    transform: rotate(-0.5deg) translateY(30px);
+  }
+
+  .archive-page:nth-child(3).visible {
+    transform: rotate(-0.5deg) translateY(0);
+  }
+
+  .seal {
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    color: var(--gold);
+    opacity: 0.7;
+    animation: sealShimmer 3s ease-in-out infinite;
+  }
+
+  @keyframes sealShimmer {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  .archive-text {
+    font-family: 'Cormorant Infant', serif;
+    font-size: clamp(0.8rem, 1.3vw, 1rem);
+    font-style: italic;
+    color: var(--bone);
+    opacity: 0.7;
+    line-height: 2;
+  }
+
+  /* MAP */
+  #map-section {
+    background: var(--void);
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 10vh 5vw;
+  }
+
+  #map-container {
+    opacity: 0;
+    transition: opacity 3s ease;
+    text-align: center;
+  }
+
+  #map-container.visible {
+    opacity: 1;
+  }
+
+  #map-svg {
+    width: min(80vw, 600px);
+    height: auto;
+  }
+
+  #map-inscription {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(0.6rem, 1vw, 0.8rem);
+    color: var(--gold);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    opacity: 0;
+    margin-top: 3rem;
+    transition: opacity 2s ease 1s;
+  }
+
+  #map-container.visible #map-inscription {
+    opacity: 0.8;
+  }
+
+  /* UNSEALING */
+  #unsealing {
+    background: var(--void);
+    min-height: 100vh;
+  }
+
+  #final-word {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(6rem, 18vw, 16rem);
+    font-weight: 900;
+    color: var(--gold);
+    opacity: 0;
+    transition: opacity 4s ease;
+    letter-spacing: 0.1em;
+    text-align: center;
+  }
+
+  #final-word.visible {
+    opacity: 1;
+  }
+
+  /* FOG TRANSITION */
+  .fog-gate {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--ash);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 100;
+    transition: opacity 0.8s ease;
+  }
+
+  .fog-gate.active {
+    opacity: 0.4;
+  }
+
+  /* SCROLL INDICATOR */
+  #scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Cormorant Infant', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: var(--silver);
+    opacity: 0;
+    text-transform: uppercase;
+    animation: fadeInWord 2s ease 6s forwards;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    #helmet-container { width: 85vw; }
+    #threshold-word { font-size: clamp(4rem, 18vw, 10rem); }
+    .archive-page { padding: 1.5rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: opacity 0.3s ease !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor">
+  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+    <polygon points="6,0 7.5,4.5 12,6 7.5,7.5 6,12 4.5,7.5 0,6 4.5,4.5" fill="#c8bfaa" opacity="0.8"/>
+  </svg>
+</div>
+
+<!-- FOG GATE -->
+<div class="fog-gate" id="fog"></div>
+
+<!-- THRESHOLD -->
+<section id="threshold">
+  <div id="threshold-word">SEALED</div>
+  <div id="threshold-sub">The Ashen Veil</div>
+  <div id="scroll-hint">↓ descend</div>
+</section>
+
+<!-- HELMET CHAMBER -->
+<section id="helmet-chamber">
+  <div id="helmet-container">
+    <img id="helmet-img" src="assets/images/helmet-hero.webp" alt="The Sealed Helm"/>
+    <div id="crack-glow"></div>
+  </div>
+</section>
+
+<!-- FIRST FRAGMENT -->
+<section id="fragment-section">
+  <div>
+    <p class="fragment">
+      The Orders were not formed to guard the living.<br>
+      They were formed to ensure what sleeps beneath<br>
+      does not wake through those who seek it.
+    </p>
+    <p class="fragment" style="margin-left: 15vw;">
+      Every knight who has ever stood vigil<br>
+      understood, eventually, that the gate<br>
+      opens from the inside.
+    </p>
+  </div>
+</section>
+
+<!-- KNIGHTLY ORDERS -->
+<section id="orders-section">
+  <div class="order">
+    <div class="order-title">The Ashward Vigil</div>
+    <div class="order-inscription">They sealed what the first age unearthed.</div>
+  </div>
+  <div class="order" style="align-self: flex-end; text-align: right;">
+    <div class="order-title">The Veilborn</div>
+    <div class="order-inscription">Born inside the threshold. Never returned.</div>
+  </div>
+  <div class="order">
+    <div class="order-title">The Pale Covenant</div>
+    <div class="order-inscription">Their oaths are older than the kingdoms above.</div>
+  </div>
+  <div class="order" style="align-self: center; text-align: center;">
+    <div class="order-title">The Ember Reliquary</div>
+    <div class="order-inscription">What they carry must never be named aloud.</div>
+  </div>
+</section>
+
+<!-- ARCHIVE -->
+<section id="archive-section">
+  <div class="archive-page">
+    <div class="seal">✦</div>
+    <p class="archive-text">
+      ...the third seal was not broken. It was answered.<br>
+      Something on the other side had been waiting<br>
+      with the correct response for longer than<br>
+      the seal had existed...
+    </p>
+  </div>
+  <div class="archive-page">
+    <div class="seal">✦</div>
+    <p class="archive-text">
+      ...we did not discover the Veil.<br>
+      The Veil allowed itself to be found.<br>
+      The distinction matters more than<br>
+      any of us understood at the time...
+    </p>
+  </div>
+  <div class="archive-page">
+    <div class="seal">✦</div>
+    <p class="archive-text">
+      ...the last Ashward wrote only one word<br>
+      before the vigil took him.<br>
+      The word was not a warning.<br>
+      It was a confirmation...
+    </p>
+  </div>
+</section>
+
+<!-- MAP -->
+<section id="map-section">
+  <div id="map-container">
+    <svg id="map-svg" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="600" height="400" fill="#080806"/>
+      <path d="M50 350 Q150 200 300 180 Q450 160 550 80" stroke="#2a2820" stroke-width="1" fill="none"/>
+      <path d="M80 380 Q200 300 350 280 Q480 260 570 150" stroke="#1a1814" stroke-width="0.5" fill="none"/>
+      <circle cx="150" cy="250" r="4" fill="#8a8880" opacity="0.6"/>
+      <circle cx="300" cy="180" r="6" fill="#8a8880" opacity="0.4"/>
+      <circle cx="420" cy="200" r="3" fill="#c9a84c" opacity="0.8"/>
+      <circle cx="520" cy="120" r="5" fill="#8a8880" opacity="0.3"/>
+      <circle cx="200" cy="320" r="3" fill="#8a8880" opacity="0.5"/>
+      <text x="145" y="240" fill="#8a8880" font-family="serif" font-size="8" opacity="0.5">✦</text>
+      <text x="295" y="170" fill="#8a8880" font-family="serif" font-size="10" opacity="0.4">✦</text>
+      <text x="415" y="192" fill="#c9a84c" font-family="serif" font-size="12" opacity="0.7">✦</text>
+      <text x="515" y="112" fill="#8a8880" font-family="serif" font-size="8" opacity="0.3">✦</text>
+      <path d="M100 100 L120 80 L140 100 L130 130 L110 130 Z" stroke="#2a2820" stroke-width="0.5" fill="none" opacity="0.4"/>
+      <path d="M400 300 L420 280 L440 300 L430 330 L410 330 Z" stroke="#1a1814" stroke-width="0.5" fill="none" opacity="0.3"/>
+      <text x="10" y="390" fill="#2a2820" font-family="serif" font-size="6" opacity="0.6">THE ASHEN VEIL — RESTRICTED</text>
+    </svg>
+    <div id="map-inscription">You were not meant to find this.</div>
+  </div>
+</section>
+
+<!-- UNSEALING -->
+<section id="unsealing">
+  <div id="final-word">AWAKE</div>
+</section>
+
+<script>
+  // CURSOR
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+
+  // HELMET CURSOR REACTION
+  const helmet = document.getElementById('helmet-img');
+  document.addEventListener('mousemove', e => {
+    const rect = helmet.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const rotateX = (e.clientY - centerY) / 80;
+    const rotateY = (e.clientX - centerX) / 80;
+    helmet.style.transform = `perspective(800px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+  });
+
+  // SCROLL OBSERVER
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll('.order, .archive-page, #map-container, #final-word')
+    .forEach(el => observer.observe(el));
+
+  // FOG GATE ON SECTION CHANGE
+  const fog = document.getElementById('fog');
+  const sections = document.querySelectorAll('section');
+  let lastSection = null;
+
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && entry.target !== lastSection) {
+        lastSection = entry.target;
+        fog.classList.add('active');
+        setTimeout(() => fog.classList.remove('active'), 800);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  sections.forEach(s => sectionObserver.observe(s));
+</script>
+</body>
+</html>
